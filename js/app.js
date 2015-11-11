@@ -16,6 +16,18 @@ OpenspendingListify.init = function() {
 
     $('#form-year .radio input:last').attr('checked', 'checked');
   });
+
+  $('.modal').on('hide.bs.modal', function (e) {
+    // do something...
+    console.log('hid a modal!');
+
+    $('#choice-size').text($('#form-size input:checked').parent().text());
+    $('#choice-order').text($('#form-order input:checked').parent().text());
+    $('#choice-kind').text($('#form-kind input:checked').parent().text());
+    $('#choice-plan').text($('#form-plan input:checked').parent().text());
+    $('#choice-direction').text($('#form-direction input:checked').parent().text());
+    $('#choice-year').text($('#form-year input:checked').parent().text());
+  })
 };
 
 $(document).ready(function() {
