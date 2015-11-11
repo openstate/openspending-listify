@@ -13,6 +13,10 @@ a:hover {
   border-bottom: 1px dotted #777;
 }
 
+.modal-title, .modal-body {
+  color: #333;
+  text-shadow: 0 0 0;
+}
 /* Custom default button */
 .btn-default,
 .btn-default:hover,

@@ -47,7 +47,13 @@
 
           <div class="inner cover">
             <h1 class="cover-heading">Lijsten maken</h1>
-            <p class="lead">Ik wil een lijst van de <a href="#">10</a> <a href="#">hoogste</a> <a href="#">gemeentelijke</a> <a href="#">uitgaven</a> in <a href="#">2015</a> </p>
+            <p class="lead">Ik wil een lijst van de
+              <a id="choice-size" href="#" data-toggle="modal" data-target="#modal-size">10</a>
+              <a id="choice-order" href="#" data-toggle="modal" data-target="#modal-order">hoogste</a>
+              <a id="choice-kind" href="#" data-toggle="modal" data-target="#modal-kind">gemeentelijke</a>
+              <a id="choice-plan" href="#" data-toggle="modal" data-target="#modal-plan">begrote</a>
+              <a id="choice-direction" href="#" data-toggle="modal" data-target="#modal-direction">uitgaven</a> in
+              <a id="choice-year" href="#" data-toggle="modal" data-target="#modal-year">2015</a> </p>
             <p class="lead">
               <a href="http://www.openspending.nl/" target="_blank" class="btn btn-lg btn-default">Berekenen</a>
             </p>
@@ -65,10 +71,222 @@
 
     </div>
 
+    <!-- Button trigger modal -->
+    <!--
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+      Launch demo modal
+    </button>
+    -->
+
+    <!-- Modal size -->
+    <div class="modal fade" id="modal-size" tabindex="-1" role="dialog" aria-labelledby="modal-size-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modal-size-label">Aantal resultaten</h4>
+          </div>
+          <div class="modal-body">
+            <form id="form-size">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="size" id="options-size-10" value="10" checked>
+                  10
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="size" id="options-size-20" value="20">
+                  20
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="size" id="options-size-50" value="50">
+                  50
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="size" id="options-size-all" value="400">
+                  Alle
+                </label>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal order -->
+    <div class="modal fade" id="modal-order" tabindex="-1" role="dialog" aria-labelledby="modal-order-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modal-order-label">Volgorde</h4>
+          </div>
+          <div class="modal-body">
+            <form id="form-order">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="order" id="options-order-desc" value="desc" checked>
+                  hoogste
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="order" id="options-order-asc" value="asc">
+                  laagste
+                </label>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal kind -->
+    <div class="modal fade" id="modal-kind" tabindex="-1" role="dialog" aria-labelledby="modal-kind-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modal-kind-label">Soort overheid</h4>
+          </div>
+          <div class="modal-body">
+            <form id="form-kind">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="kind" id="options-kind-county" value="county" checked>
+                  gemeente
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="kind" id="options-kind-province" value="province">
+                  provincie
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="kind" id="options-kind-watership" value="watership">
+                  waterschap
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="kind" id="options-kind-municipal-arrangement" value="municipal_arrangement">
+                  gemeenschappelijke regeling
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="kind" id="options-kind-subcounty" value="subcounty">
+                  stadsdeel
+                </label>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal plan -->
+    <div class="modal fade" id="modal-plan" tabindex="-1" role="dialog" aria-labelledby="modal-plan-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modal-plan-label">Begroting/realisatie</h4>
+          </div>
+          <div class="modal-body">
+            <form id="form-size">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="plan" id="options-plan-budget" value="budget" checked>
+                  begrote
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="plan" id="options-plan-spending" value="spending">
+                  gerealiseerde
+                </label>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal direction -->
+    <div class="modal fade" id="modal-direction" tabindex="-1" role="dialog" aria-labelledby="modal-direction-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modal-plan-label">Wat</h4>
+          </div>
+          <div class="modal-body">
+            <form id="form-size">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="direction" id="options-direction-in" value="in">
+                  inkomsten
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="direction" id="options-direction-out" value="out" checked>
+                  uitgaven
+                </label>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal year -->
+    <div class="modal fade" id="modal-year" tabindex="-1" role="dialog" aria-labelledby="modal-year-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modal-year-label">Welk jaar</h4>
+          </div>
+          <div class="modal-body">
+            <form id="form-year">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
