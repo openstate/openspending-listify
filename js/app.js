@@ -45,6 +45,7 @@ OpenspendingListify.init = function() {
 
   $('.modal').on('hide.bs.modal', function (e) {
     // do something...
+    $('#status').empty();
     console.log('hid a modal!');
 
     var components = ['size', 'order', 'kind', 'plan', 'direction', 'year'];
@@ -106,8 +107,7 @@ OpenspendingListify.get_sample_document = function(kind, year, period, plan, dir
     return;
   }
 
-  // TODO: make it return one document, since that is all we need anyway ...
-  var docs_url = 'http://www.openspending.nl/api/v1/documents/?government__kind=' + kind + '&year=' + year + '&period=' + period + '&plan=' + plan + '&format=json';
+  var docs_url = 'http://www.openspending.nl/api/v1/documents/?government__kind=' + kind + '&year=' + year + '&period=' + period + '&plan=' + plan + '&limit=1&format=json';
   OpenspendingListify.labels_busy = true;
   console.log(docs_url);
   $.get(docs_url, function (data) {
@@ -117,19 +117,66 @@ OpenspendingListify.get_sample_document = function(kind, year, period, plan, dir
     if (data.objects.length > 0) {
       OpenspendingListify.get_all_labels(data.objects[0].id, direction);
     } else {
+      OpenspendingListify.labels_busy = false;
       OpenspendingListify.labels = [];
       $("#form-label input").typeahead('destroy').typeahead({ source: []});
+      $('#status').html('<div class="alert alert-danger" role="alert">Er zijn geen labels gevonden. Probeer het later nog een keer ...</div>');
     }
   });
 };
 
-OpenspendingListify.get_totals = function() {
+OpenspendingListify.get_all_documents = function() {
+  var docs_url = 'http://www.openspending.nl/api/v1/documents/?government__kind=' + OpenspendingListify.kind + '&year=' + OpenspendingListify.year + '&period=' + OpenspendingListify.period + '&plan=' + OpenspendingListify.plan + '&limit=500&format=json';
+
+  return $.get(docs_url);
+};
+
+OpenspendingListify.get_aggregated_entries = function(label) {
   // http://www.openspending.nl/api/v1/aggregations/entries/?type=spending&code_main=1&period=5&year=2012&direction=out&format=json
+  var url = 'http://www.openspending.nl/api/v1/aggregations/entries/?type=' + OpenspendingListify.plan + '&year=' + OpenspendingListify.year;
+  url = url + '&period=' + OpenspendingListify.period + '&code_' + label.type + '=' + label.code + '&limit=1&format=json';
+
+  return $.get(url);
 };
 
 OpenspendingListify.submit = function() {
  // http://www.openspending.nl/api/v1/documents/?government__kind=county&year=2014&period=5&plan=spending&format=json
   console.log('form submitted!');
+
+  $('#status').empty();
+
+  if (OpenspendingListify.labels_busy || OpenspendingListify.governments_busy) {
+    $('#status').html('<div class="alert alert-danger" role="alert">Er zijn nog dingen aan het laden. Probeer het later nog een keer ...</div>');
+    return;
+  }
+
+  if ($('#form-label input').val() == '') {
+    $('#status').html('<div class="alert alert-danger" role="alert">Er is geen label geselecteerd. Probeer het later nog een keer ...</div>');
+    return;
+  }
+  var selected_label = OpenspendingListify.labels.filter(function (l) { return (l.label == $('#form-label input').val()); });
+
+  if (selected_label.length != 1) {
+    $('#status').html('<div class="alert alert-danger" role="alert">Er is geen label gevonden. Probeer het later nog een keer ...</div>');
+    return;
+  }
+
+  $('#status').html('<div class="alert alert-info" role="alert">Data wordt verzameld ...</div>');
+
+  $.when(
+    OpenspendingListify.get_all_documents(),
+    OpenspendingListify.get_aggregated_entries(selected_label[0])
+  ).then(function (docs_result, entries_result) {
+    $('#status').html('<div class="alert alert-success" role="alert">De resultaten zijn berekent ...</div>');
+    var documents = {};
+    $.each(docs_result[0].objects, function (idx, item) {
+      documents[item.id] = item;
+    });
+    console.log('results:');
+    $.each(entries_result[0].facets.document.terms, function (idx, t) {
+      console.log(idx + '. ' + documents[t.term].government.name + ' : ' + t.total);
+    });
+  });
 };
 
 $(document).ready(function() {
