@@ -10,6 +10,7 @@ OpenspendingListify.plan = "budget";
 OpenspendingListify.direction = "out";
 OpenspendingListify.year = 2015;
 OpenspendingListify.period = 0;
+OpenspendingListify.results = [];
 
 OpenspendingListify.get_governments = function() {
   if (OpenspendingListify.governments_busy) {
@@ -134,7 +135,7 @@ OpenspendingListify.get_all_documents = function() {
 OpenspendingListify.get_aggregated_entries = function(label) {
   // http://www.openspending.nl/api/v1/aggregations/entries/?type=spending&code_main=1&period=5&year=2012&direction=out&format=json
   var url = 'http://www.openspending.nl/api/v1/aggregations/entries/?type=' + OpenspendingListify.plan + '&year=' + OpenspendingListify.year;
-  url = url + '&period=' + OpenspendingListify.period + '&code_' + label.type + '=' + label.code + '&limit=1&format=json';
+  url = url + '&period=' + OpenspendingListify.period + '&code_' + label.type + '=' + label.code + '&direction=' + OpenspendingListify.direction + '&limit=1&format=json';
 
   return $.get(url);
 };
@@ -172,10 +173,38 @@ OpenspendingListify.submit = function() {
     $.each(docs_result[0].objects, function (idx, item) {
       documents[item.id] = item;
     });
-    console.log('results:');
+    OpenspendingListify.results = [];
     $.each(entries_result[0].facets.document.terms, function (idx, t) {
-      console.log(idx + '. ' + documents[t.term].government.name + ' : ' + t.total);
+      OpenspendingListify.results.push({
+        document: documents[t.term],
+        government: documents[t.term].government,
+        total: t.total
+      });
     });
+    $('#status').empty();
+    OpenspendingListify.show_results();
+  });
+};
+
+OpenspendingListify.show_results = function() {
+  var max_total = Math.max.apply(null, OpenspendingListify.results.map(function (r) { return r.total; }));
+
+  $('#results').empty();
+
+  $.each(OpenspendingListify.results.sort(function (a,b) { return b.total - a.total; }), function (idx, item) {
+    var output = '<div class="result row">';
+    output += '  <h3>' + idx + ': ' + item.government.name + '(' + item.total + ')</h3>';
+    var pct = 0;
+    if (item.total > 0) {
+      pct = (item.total * 100.0) / max_total;
+    }
+    output += '  <div class="progress">';
+    output += '    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: '+ pct + '%">';
+    output += '      <span class="sr-only">' + pct + '% Complete</span>';
+    output += '    </div>';
+    output += '  </div>';
+    output += '</div>';
+    $('#results').append($(output));
   });
 };
 
