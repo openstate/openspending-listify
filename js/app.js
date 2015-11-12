@@ -193,7 +193,8 @@ OpenspendingListify.show_results = function() {
 
   $.each(OpenspendingListify.results.sort(function (a,b) { return b.total - a.total; }), function (idx, item) {
     var output = '<div class="result row">';
-    output += '  <h3>' + idx + ': ' + item.government.name + '(' + item.total + ')</h3>';
+    var total_formatted = accounting.formatMoney(item.total, "€", 2, ".", ",");
+    output += '  <h3>' + (idx+1) + '. ' + item.government.name + ' : ' + total_formatted + '</h3>';
     var pct = 0;
     if (item.total > 0) {
       pct = (item.total * 100.0) / max_total;
