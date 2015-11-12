@@ -1,5 +1,6 @@
 OpenspendingListify = window.OpenspendingListify || {};
 OpenspendingListify.labels = window.OpenspendingListify.labels || [];
+OpenspendingListify.labels_busy = false;
 OpenspendingListify.governments = window.OpenspendingListify.governments || [];
 OpenspendingListify.governments_busy = false;
 OpenspendingListify.size = 10;
@@ -48,7 +49,7 @@ OpenspendingListify.init = function() {
 
     var components = ['size', 'order', 'kind', 'plan', 'direction', 'year'];
     var dirty = false;
-    var retech_governments = false;
+    var refetch_governments = false;
     for (idx in components) {
       var component = components[idx];
       $('#choice-' + component).text($('#form-' + component + ' input:checked').parent().text());
@@ -96,17 +97,29 @@ OpenspendingListify.get_all_labels = function(document_id, direction) {
     console.log('got labels!');
     OpenspendingListify.labels = data.objects;
     $("#form-label input").typeahead('destroy').typeahead({ source: OpenspendingListify.labels.map(function (i) { return {id: i.code, name: i.label };}) });
+    OpenspendingListify.labels_busy = false;
   });
 };
 
 OpenspendingListify.get_sample_document = function(kind, year, period, plan, direction) {
+  if (OpenspendingListify.labels_busy) {
+    return;
+  }
+
   // TODO: make it return one document, since that is all we need anyway ...
-  var docs_url = 'http://www.openspending.nl/api/v1/documents/?government__kind=' + kind + '&year=' + year + '&period=' + period + '&plan=' + plan + '&format=json'
+  var docs_url = 'http://www.openspending.nl/api/v1/documents/?government__kind=' + kind + '&year=' + year + '&period=' + period + '&plan=' + plan + '&format=json';
+  OpenspendingListify.labels_busy = true;
   console.log(docs_url);
   $.get(docs_url, function (data) {
     console.log('got data:');
     console.dir(data);
-    OpenspendingListify.get_all_labels(data.objects[0].id, direction);
+
+    if (data.objects.length > 0) {
+      OpenspendingListify.get_all_labels(data.objects[0].id, direction);
+    } else {
+      OpenspendingListify.labels = [];
+      $("#form-label input").typeahead('destroy').typeahead({ source: []});
+    }
   });
 };
 
@@ -117,14 +130,6 @@ OpenspendingListify.get_totals = function() {
 OpenspendingListify.submit = function() {
  // http://www.openspending.nl/api/v1/documents/?government__kind=county&year=2014&period=5&plan=spending&format=json
   console.log('form submitted!');
-  var size = $('#form-size input:checked').val();
-  var order = $('#form-order input:checked').val();
-  var kind = $('#form-kind input:checked').val();
-  var plan = $('#form-plan input:checked').val();
-  var direction = $('#form-direction input:checked').val();
-  var year = $('#form-year input:checked').val();
-  var period = (plan == "budget") ? 0 : 5; // TODO: implement kwartalen
-  OpenspendingListify.get_sample_document(kind, year, period, plan, direction);
 };
 
 $(document).ready(function() {
