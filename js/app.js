@@ -94,10 +94,10 @@ OpenspendingListify.init = function() {
 
 OpenspendingListify.get_all_labels = function(document_id, direction) {
   // get all the labels :)
-  var labels_url = 'http://www.openspending.nl/api/v1/labels/?document_id=' + document_id + '&limit=500&direction=' + direction + '&format=json';
+  var labels_url = 'http://www.openspending.nl/api/v1/labels/?document_id=' + document_id + '&limit=500&format=json';
   $.get(labels_url, function (data) {
     console.log('got labels!');
-    OpenspendingListify.labels = data.objects;
+    OpenspendingListify.labels = data.objects.filter(function (l) { return (l.direction == direction);});
     $("#form-label input").typeahead('destroy').typeahead({ source: OpenspendingListify.labels.map(function (i) { return {id: i.code, name: i.label };}) });
     OpenspendingListify.labels_busy = false;
   });
