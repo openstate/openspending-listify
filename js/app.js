@@ -137,7 +137,7 @@ OpenspendingListify.get_aggregated_entries = function(label) {
   // http://www.openspending.nl/api/v1/aggregations/entries/?type=spending&code_main=1&period=5&year=2012&direction=out&format=json
   var url = 'http://www.openspending.nl/api/v1/aggregations/entries/?type=' + OpenspendingListify.plan + '&year=' + OpenspendingListify.year;
   url = url + '&period=' + OpenspendingListify.period + '&code_' + label.type + '=' + label.code + '&direction=' + OpenspendingListify.direction + '&limit=1&format=json';
-
+  console.log(url);
   return $.get(url);
 };
 
@@ -169,6 +169,9 @@ OpenspendingListify.submit = function() {
     OpenspendingListify.get_all_documents(),
     OpenspendingListify.get_aggregated_entries(selected_label[0])
   ).then(function (docs_result, entries_result) {
+    console.log('query results:');
+    console.dir(docs_result);
+    console.dir(entries_result);
     $('#status').html('<div class="alert alert-success" role="alert">De resultaten zijn berekent ...</div>');
     var documents = {};
     $.each(docs_result[0].objects, function (idx, item) {
@@ -176,12 +179,14 @@ OpenspendingListify.submit = function() {
     });
     OpenspendingListify.results = [];
     $.each(entries_result[0].facets.document.terms, function (idx, t) {
-      OpenspendingListify.results.push({
-        document: documents[t.term],
-        government: documents[t.term].government,
-        total: t.total,
-        factor: OpenspendingListify.get_metric_for(documents[t.term].government, OpenspendingListify.normalisation, OpenspendingListify.year)
-      });
+      if (typeof(documents[t.term]) !== 'undefined') {
+        OpenspendingListify.results.push({
+          document: documents[t.term],
+          government: documents[t.term].government,
+          total: t.total,
+          factor: OpenspendingListify.get_metric_for(documents[t.term].government, OpenspendingListify.normalisation, OpenspendingListify.year)
+        });
+      };
     });
     $('#status').empty();
     OpenspendingListify.show_results();
