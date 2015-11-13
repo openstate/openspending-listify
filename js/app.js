@@ -11,6 +11,7 @@ OpenspendingListify.direction = "out";
 OpenspendingListify.year = 2015;
 OpenspendingListify.period = 0;
 OpenspendingListify.results = [];
+OpenspendingListify.normalisation = "currency";
 
 OpenspendingListify.get_governments = function() {
   if (OpenspendingListify.governments_busy) {
@@ -49,7 +50,7 @@ OpenspendingListify.init = function() {
     $('#status').empty();
     console.log('hid a modal!');
 
-    var components = ['size', 'order', 'kind', 'plan', 'direction', 'year'];
+    var components = ['size', 'order', 'kind', 'plan', 'direction', 'year', 'normalisation'];
     var dirty = false;
     var refetch_governments = false;
     for (idx in components) {
@@ -178,7 +179,8 @@ OpenspendingListify.submit = function() {
       OpenspendingListify.results.push({
         document: documents[t.term],
         government: documents[t.term].government,
-        total: t.total
+        total: t.total,
+        factor: OpenspendingListify.get_metric_for(documents[t.term].government, OpenspendingListify.normalisation, OpenspendingListify.year)
       });
     });
     $('#status').empty();
@@ -186,18 +188,24 @@ OpenspendingListify.submit = function() {
   });
 };
 
+OpenspendingListify.get_metric_for = function(government, metric_type, year) {
+  var filtered_results = government.metrics.filter(function (m) { return ((m.metric == metric_type) && (m.year <= year)); });
+  return filtered_results[0].factor;
+};
+
 OpenspendingListify.show_results = function() {
-  var max_total = Math.max.apply(null, OpenspendingListify.results.map(function (r) { return r.total; }));
+  var max_total = Math.max.apply(null, OpenspendingListify.results.map(function (r) { return (r.total / r.factor * 1.0); }));
 
   $('#results').empty();
 
-  $.each(OpenspendingListify.results.sort(function (a,b) { return b.total - a.total; }), function (idx, item) {
+  $.each(OpenspendingListify.results.sort(function (a,b) { return ((b.total / (b.factor * 1.0)) - (a.total / (a.factor * 1.0))); }), function (idx, item) {
     var output = '<div class="result row">';
-    var total_formatted = accounting.formatMoney(item.total, "€", 2, ".", ",");
+    var normalised_total = item.total / (item.factor * 1.0);
+    var total_formatted = accounting.formatMoney(normalised_total, "€", 2, ".", ",");
     output += '  <h3>' + (idx+1) + '. ' + item.government.name + ' : ' + total_formatted + '</h3>';
     var pct = 0;
     if (item.total > 0) {
-      pct = (item.total * 100.0) / max_total;
+      pct = ((item.total / item.factor * 1.0) * 100.0) / max_total;
     }
     output += '  <div class="progress">';
     output += '    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: '+ pct + '%">';

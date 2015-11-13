@@ -61,6 +61,9 @@
               </form>
             </p>
             <p class="lead">
+              omgerekend naar <a id="choice-normalisation" href="#" data-toggle="modal" data-target="#modal-normalisation">euro's</a>
+            </p>
+            <p class="lead">
               <a id="btn-submit" href="http://www.openspending.nl/" target="_blank" class="btn btn-lg btn-default">Berekenen</a>
             </p>
             <p id="status" class="lead">
@@ -283,6 +286,55 @@
           </div>
           <div class="modal-body">
             <form id="form-year">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal normalisation -->
+    <div class="modal fade" id="modal-normalisation" tabindex="-1" role="dialog" aria-labelledby="modal-normalisation-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modal-normalisation-label">Omrekenen naar</h4>
+          </div>
+          <div class="modal-body">
+            <form id="form-normalisation">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="normalisation" id="options-normalisation-currency" value="currency" checked>
+                  euro's
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="normalisation" id="options-normalisation-population" value="population">
+                  aantal inwoners
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="normalisation" id="options-normalisation-household" value="household">
+                  aantal huishoudens
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="normalisation" id="options-normalisation-area" value="area">
+                  oppervlakte
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="normalisation" id="options-normalisation-fte" value="fte">
+                  aantal FTE's
+                </label>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
