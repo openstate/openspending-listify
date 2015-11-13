@@ -203,7 +203,11 @@ OpenspendingListify.show_results = function() {
 
   $('#results').empty();
 
-  $.each(OpenspendingListify.results.sort(function (a,b) { return ((b.total / (b.factor * 1.0)) - (a.total / (a.factor * 1.0))); }), function (idx, item) {
+  var sorted_results = OpenspendingListify.results.sort(function (a,b) { return ((b.total / (b.factor * 1.0)) - (a.total / (a.factor * 1.0))); });
+  if (OpenspendingListify.order == 'asc') {
+    sorted_results = sorted_results.reverse();
+  }
+  $.each(sorted_results.slice(0, OpenspendingListify.size), function (idx, item) {
     var output = '<div class="result row">';
     var normalised_total = item.total / (item.factor * 1.0);
     var total_formatted = accounting.formatMoney(normalised_total, "€", 2, ".", ",");
