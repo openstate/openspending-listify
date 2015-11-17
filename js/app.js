@@ -190,6 +190,7 @@ OpenspendingListify.submit = function() {
     });
     $('#status').empty();
     OpenspendingListify.show_results();
+    OpenspendingListify.prepare_download();
   });
 };
 
@@ -224,6 +225,26 @@ OpenspendingListify.show_results = function() {
     output += '</div>';
     $('#results').append($(output));
   });
+};
+
+OpenspendingListify.prepare_download = function() {
+  var max_total = Math.max.apply(null, OpenspendingListify.results.map(function (r) { return (r.total / r.factor * 1.0); }));
+  var sorted_results = OpenspendingListify.results.sort(function (a,b) { return ((b.total / (b.factor * 1.0)) - (a.total / (a.factor * 1.0))); });
+  if (OpenspendingListify.order == 'asc') {
+    sorted_results = sorted_results.reverse();
+  }
+  var rows = [['plek', 'naam', 'bedrag', 'percentage'].join(';')];
+  $.each(sorted_results, function (idx, item) {
+    var normalised_total = item.total / (item.factor * 1.0);
+    var pct = 0;
+    if (item.total > 0) {
+      pct = ((item.total / item.factor * 1.0) * 100.0) / max_total;
+    }
+    rows.push([idx+1, item.government.name, normalised_total, pct].join(';'));
+  });
+  $('#btn-download').attr(
+    'href', 'data:attachment/csv,' + encodeURIComponent(rows.join("\n"))
+  ).attr('target', '_blank').attr('download', 'data.csv').removeClass('disabled');
 };
 
 $(document).ready(function() {
