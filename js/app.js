@@ -93,6 +93,31 @@ OpenspendingListify.init = function() {
     OpenspendingListify.direction);
 };
 
+OpenspendingListify.makefull_urls_for_labels = function() {
+  var main2slug = {};
+  main_functions = OpenspendingListify.labels.filter(function (l) { return l.type == "main";});
+  for (idx in main_functions) {
+    main2slug[main_functions[idx]['code']] = main_functions[idx]['slug'];
+  }
+
+  $.each(OpenspendingListify.labels, function (idx, item) {
+    var full_url;
+    if (item.type == "main") {
+      full_url = 'hoofdfuncties/' + item.slug + '/functies/';
+    } else if (item.type == "sub") {
+      if (item.code[0] == 'A') {
+        full_url = undefined;
+      } else {
+        full_url = 'hoofdfuncties/' + main2slug[item.code[0]] + '/functies/' + item.slug + '/categorieen/';
+      }
+    } else {
+      full_url = 'categorieen/' + item.slug + '/hoofdfuncties/';
+    }
+    item.full_url = full_url;
+  });
+};
+
+
 OpenspendingListify.get_all_labels = function(document_id, direction) {
   // get all the labels :)
   var labels_url = 'http://www.openspending.nl/api/v1/labels/?document_id=' + document_id + '&limit=500&format=json';
