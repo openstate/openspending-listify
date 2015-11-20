@@ -53,6 +53,7 @@
               <a id="choice-kind" href="#" data-toggle="modal" data-target="#modal-kind">gemeentelijke</a>
               <a id="choice-plan" href="#" data-toggle="modal" data-target="#modal-plan">begrote</a>
               <a id="choice-direction" href="#" data-toggle="modal" data-target="#modal-direction">uitgaven</a> in
+              <a id="choice-period" href="#" data-toggle="modal" data-target="#modal-period">het hele jaar</a>
               <a id="choice-year" href="#" data-toggle="modal" data-target="#modal-year">2015</a><p>
             <p class="lead">over:</p>
             <p class="lead">
@@ -334,6 +335,56 @@
                 <label>
                   <input type="radio" name="normalisation" id="options-normalisation-fte" value="fte">
                   aantal FTE's
+                </label>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal period -->
+    <div class="modal fade" id="modal-period" tabindex="-1" role="dialog" aria-labelledby="modal-period-label">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modal-period-label">Welke periode</h4>
+          </div>
+          <div class="modal-body">
+            <form id="form-period">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="period" id="options-period-0" value="0" checked>
+                  het hele jaar
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="period" id="options-period-1" value="1">
+                  eerste kwartaal
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="period" id="options-period-2" value="2">
+                  tweede kwartaal
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="period" id="options-period-3" value="3">
+                  derde kwartaal
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" name="period" id="options-period-4" value="4">
+                  vierde kwartaal
                 </label>
               </div>
             </form>

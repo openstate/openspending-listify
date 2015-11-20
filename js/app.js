@@ -51,7 +51,7 @@ OpenspendingListify.init = function() {
     $('#status').empty();
     console.log('hid a modal!');
 
-    var components = ['size', 'order', 'kind', 'plan', 'direction', 'year', 'normalisation'];
+    var components = ['size', 'order', 'kind', 'plan', 'direction', 'year', 'normalisation', 'period'];
     var dirty = false;
     var refetch_governments = false;
     for (idx in components) {
@@ -65,9 +65,17 @@ OpenspendingListify.init = function() {
           refetch_governments = true;
         }
       }
-      OpenspendingListify[component] = new_val;
+
+      if (component == 'period') {
+        OpenspendingListify[component] = parseInt(new_val);
+      } else {
+        OpenspendingListify[component] = new_val;
+      }
     }
-    OpenspendingListify.period = (OpenspendingListify.plan == "budget") ? 0 : 5; // TODO: implement kwartalen
+
+    if ((OpenspendingListify.plan == "spending") && (OpenspendingListify.period == 0)) {
+      OpenspendingListify.period = 5;
+    }
 
     if (refetch_governments) {
       OpenspendingListify.get_governments();
@@ -237,7 +245,7 @@ OpenspendingListify.get_url_for_item = function(item) {
     in: 'baten',
     out: 'lasten'
   };
-  var url = "http://www.openspending.nl/" + item.government.slug + '/';
+  var url = "http://test.openspending.nl/" + item.government.slug + '/';
   url += plan2nl[OpenspendingListify.plan] + '/' + OpenspendingListify.year + '-' + OpenspendingListify.period + '/';
   url += direction2nl[OpenspendingListify.direction] + '/' + OpenspendingListify.selected_label.full_url;
   return url;
