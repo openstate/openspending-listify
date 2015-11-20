@@ -9,6 +9,10 @@ a:hover {
   color: #337ab7;
 }
 
+h3 a {
+  color: white;
+}
+
 .lead a {
   border-bottom: 1px dotted #777;
 }

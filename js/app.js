@@ -12,6 +12,7 @@ OpenspendingListify.year = 2015;
 OpenspendingListify.period = 0;
 OpenspendingListify.results = [];
 OpenspendingListify.normalisation = "currency";
+OpenspendingListify.selected_label = undefined;
 
 OpenspendingListify.get_governments = function() {
   if (OpenspendingListify.governments_busy) {
@@ -93,7 +94,7 @@ OpenspendingListify.init = function() {
     OpenspendingListify.direction);
 };
 
-OpenspendingListify.makefull_urls_for_labels = function() {
+OpenspendingListify.make_full_urls_for_labels = function() {
   var main2slug = {};
   main_functions = OpenspendingListify.labels.filter(function (l) { return l.type == "main";});
   for (idx in main_functions) {
@@ -124,6 +125,7 @@ OpenspendingListify.get_all_labels = function(document_id, direction) {
   $.get(labels_url, function (data) {
     console.log('got labels!');
     OpenspendingListify.labels = data.objects.filter(function (l) { return (l.direction == direction);});
+    OpenspendingListify.make_full_urls_for_labels();
     $("#form-label input").typeahead('destroy').typeahead({ source: OpenspendingListify.labels.map(function (i) { return {id: i.code, name: i.label };}) });
     OpenspendingListify.labels_busy = false;
   });
@@ -184,10 +186,12 @@ OpenspendingListify.submit = function() {
   var selected_label = OpenspendingListify.labels.filter(function (l) { return (l.label == $('#form-label input').val()); });
 
   if (selected_label.length != 1) {
+    OpenspendingListify.selected_label = undefined;
     $('#status').html('<div class="alert alert-danger" role="alert">Er is geen label gevonden. Probeer het later nog een keer ...</div>');
     return;
   }
 
+  OpenspendingListify.selected_label = selected_label[0];
   $('#status').html('<div class="alert alert-info" role="alert">Data wordt verzameld ...</div>');
 
   $.when(
@@ -224,6 +228,21 @@ OpenspendingListify.get_metric_for = function(government, metric_type, year) {
   return filtered_results[0].factor;
 };
 
+OpenspendingListify.get_url_for_item = function(item) {
+  var plan2nl = {
+    budget: 'begroting',
+    spending: 'realisatie'
+  };
+  var direction2nl = {
+    in: 'baten',
+    out: 'lasten'
+  };
+  var url = "http://www.openspending.nl/" + item.government.slug + '/';
+  url += plan2nl[OpenspendingListify.plan] + '/' + OpenspendingListify.year + '-' + OpenspendingListify.period + '/';
+  url += direction2nl[OpenspendingListify.direction] + '/' + OpenspendingListify.selected_label.full_url;
+  return url;
+};
+
 OpenspendingListify.show_results = function() {
   var max_total = Math.max.apply(null, OpenspendingListify.results.map(function (r) { return (r.total / r.factor * 1.0); }));
 
@@ -237,7 +256,8 @@ OpenspendingListify.show_results = function() {
     var output = '<div class="result row">';
     var normalised_total = item.total / (item.factor * 1.0);
     var total_formatted = accounting.formatMoney(normalised_total, "€", 2, ".", ",");
-    output += '  <h3>' + (idx+1) + '. ' + item.government.name + ' : ' + total_formatted + '</h3>';
+    var openspending_url = OpenspendingListify.get_url_for_item(item);
+    output += '  <h3><a href="' + openspending_url + '" target="_blank">' + (idx+1) + '. ' + item.government.name + ' : ' + total_formatted + ' <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></h3>';
     var pct = 0;
     if (item.total > 0) {
       pct = ((item.total / item.factor * 1.0) * 100.0) / max_total;
