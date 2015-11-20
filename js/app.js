@@ -134,7 +134,7 @@ OpenspendingListify.get_all_labels = function(document_id, direction) {
     console.log('got labels!');
     OpenspendingListify.labels = data.objects.filter(function (l) { return (l.direction == direction);});
     OpenspendingListify.make_full_urls_for_labels();
-    $("#form-label input").typeahead('destroy').typeahead({ source: OpenspendingListify.labels.map(function (i) { return {id: i.code, name: i.label };}) });
+    $("#form-label input").typeahead('destroy').typeahead({ source: OpenspendingListify.labels.filter(function (l) { return l.code != ''; }).map(function (i) { return {id: i.code, name: i.label };}) });
     OpenspendingListify.labels_busy = false;
   });
 };
