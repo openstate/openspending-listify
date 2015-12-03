@@ -209,7 +209,7 @@ OpenspendingListify.submit = function() {
     console.log('query results:');
     console.dir(docs_result);
     console.dir(entries_result);
-    $('#status').html('<div class="alert alert-success" role="alert">De resultaten zijn berekent ...</div>');
+    $('#status').html('<div class="alert alert-success" role="alert">De resultaten zijn berekend ...</div>');
     var documents = {};
     $.each(docs_result[0].objects, function (idx, item) {
       documents[item.id] = item;
@@ -265,13 +265,13 @@ OpenspendingListify.show_results = function() {
     var normalised_total = item.total / (item.factor * 1.0);
     var total_formatted = accounting.formatMoney(normalised_total, "€", 2, ".", ",");
     var openspending_url = OpenspendingListify.get_url_for_item(item);
-    output += '  <h3><a href="' + openspending_url + '" target="_blank">' + (idx+1) + '. ' + item.government.name + ' : ' + total_formatted + ' <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></h3>';
+    output += '  <h4><a href="' + openspending_url + '" target="_blank">' + (idx+1) + '. ' + item.government.name + ' : ' + total_formatted + ' <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></h4>';
     var pct = 0;
     if (item.total > 0) {
       pct = ((item.total / item.factor * 1.0) * 100.0) / max_total;
     }
     output += '  <div class="progress">';
-    output += '    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: '+ pct + '%">';
+    output += '    <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: '+ pct + '%">';
     output += '      <span class="sr-only">' + pct + '% Complete</span>';
     output += '    </div>';
     output += '  </div>';
@@ -279,6 +279,7 @@ OpenspendingListify.show_results = function() {
     $('#results').append($(output));
   });
 };
+
 
 OpenspendingListify.prepare_download = function() {
   var max_total = Math.max.apply(null, OpenspendingListify.results.map(function (r) { return (r.total / r.factor * 1.0); }));
