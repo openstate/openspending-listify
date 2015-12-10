@@ -1,90 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- <link rel="icon" href="../../favicon.ico"> -->
+    <meta name="description" content="Openspending lijstjes - rankschik de uitgaven van overheden.">
+    <meta name="keywords" content="openspending, lijstjes, ranking gemeenten, uitgaven, begroting, rijksuitgaven, gemeentefonds, provinciefonds, openbare financien, gemeente, gemeenteraad, provincie, provinciale staten, waterschap, waterschappen, open data, open overheid, open-overheid, transparantie, politiek, lokale politiek, lokale partijen, politieke partijen, raadslidmaatschap, raad, gemeenteraadsverkiezingen, provinciale verkiezingen, regionale politiek, college van burgemeester en wethouders, griffiers, gemeentesecretaris, raadsgriffier, decentralisatie, decentrale overheid, overheid, burgers, burgerparticipatie, openbaar bestuur, openbare financien, belasting, belastingen, open state foundation, openstate, hack de overheid, hackdeoverheid, financien">
+    <meta name="author" content="Open State Foundation">
 
-    <title>Openspending Lijstenmaker</title>
+    <title>Openspending Lijstjes</title>
 
-    <!-- Bootstrap core CSS -->
+    <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/spacelab/ -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- Custom CSS -->
     <link href="css/main.css" rel="stylesheet">
+    
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
   </head>
 
-  <body>
+  
+<body id="page-top">
 
-    <div class="site-wrapper">
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#page-top">Openspending Lijstjes</a>
+            </div>
 
-      <div class="site-wrapper-inner">
-
-        <div class="cover-container">
-
-          <div class="masthead clearfix">
-            <div class="inner">
-              <h3 class="masthead-brand">Openspending Lijstenmaker</h3>
-              <nav>
-                <ul class="nav masthead-nav">
-                  <li class="active"><a href="./">Home</a></li>
-                  <li><a href="http://www.openspending.nl/" target="_blank">Openspending <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></li>
-                  <li><a href="http://www.openspending.nl/pagina/contact/" target="_blank">Contact <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a></li>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="page-scroll">
+                    <a href="#page-top"><i class="fa fa-list-ol fa-3x"></i></a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#over"><i class="fa fa-info-circle fa-3x"></i></a>
+                    </li>
+                    <li class="page-scroll">
+                    <a href="#contact"><i class="fa fa-envelope-square fa-3x"></i></a>
+                    </li>
                 </ul>
-              </nav>
             </div>
-          </div>
-
-          <div class="inner cover">
-            <h1 class="cover-heading">Ik wil een lijst van de</p>
-            <p class="lead">
-              <a id="choice-size" href="#" data-toggle="modal" data-target="#modal-size">10</a>
-              <a id="choice-order" href="#" data-toggle="modal" data-target="#modal-order">hoogste</a>
-              <a id="choice-kind" href="#" data-toggle="modal" data-target="#modal-kind">gemeentelijke</a>
-              <a id="choice-plan" href="#" data-toggle="modal" data-target="#modal-plan">begrote</a>
-              <a id="choice-direction" href="#" data-toggle="modal" data-target="#modal-direction">uitgaven</a> in het
-              <a id="choice-period" href="#" data-toggle="modal" data-target="#modal-period">hele jaar</a>
-              <a id="choice-year" href="#" data-toggle="modal" data-target="#modal-year">2015</a><p>
-            <p class="lead">over:</p>
-            <p class="lead">
-              <form id="form-label">
-                <input type="text" class="form-control" placeholder="Algemeen Bestuur">
-              </form>
-            </p>
-            <p class="lead">
-              omgerekend naar <a id="choice-normalisation" href="#" data-toggle="modal" data-target="#modal-normalisation">euro's</a>
-            </p>
-            <p class="lead">
-              <a id="btn-submit" href="http://www.openspending.nl/" target="_blank" class="btn btn-lg btn-default">Berekenen</a>
-              <a id="btn-download" href="http://www.openspending.nl/" target="_blank" class="btn btn-lg btn-default disabled">Downloaden</a>
-            </p>
-            <p id="status" class="lead">
-            </p>
-            <div id="results">
-            </div>
-          </div>
-
-          <div class="mastfoot">
-            <div class="inner">
-              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-            </div>
-          </div>
-
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- /.container-fluid -->
+    </nav>
+    
+<P></p><P><BR></P><P><BR><BR></P>
 
-      </div>
+<div class="container">       
 
+<P><BR><BR></P>  
+
+<!-- Choices -->
+
+            <h1>Ik wil een lijst van de</h1>
+            <hr>
+            <h4><i class="fa fa-arrow-circle-o-right"></i>
+              <a id="choice-size" href="#" data-toggle="modal" data-target="#modal-size"><abbr title="of 20, 50, alles" class="initialism">10</abbr></a>
+              <a id="choice-order" href="#" data-toggle="modal" data-target="#modal-order"><abbr title="of laagste" class="initialism">hoogste</abbr></a>
+              <a id="choice-kind" href="#" data-toggle="modal" data-target="#modal-kind"><abbr title="of andere overheid" class="initialism">gemeentelijke</abbr></a>
+              <a id="choice-plan" href="#" data-toggle="modal" data-target="#modal-plan"><abbr title="of gerealiseerde" class="initialism">begrote</abbr></a>
+              <a id="choice-direction" href="#" data-toggle="modal" data-target="#modal-direction"><abbr title="of inkomsten" class="initialism">uitgaven</abbr></a> in het
+              <a id="choice-period" href="#" data-toggle="modal" data-target="#modal-period"><abbr title="of een kwartaal" class="initialism">hele jaar</abbr></a>
+              <a id="choice-year" href="#" data-toggle="modal" data-target="#modal-year"><abbr title="of een ander jaar tot 2009" class="initialism">2015</abbr></a></h4>            
+</div>
+
+<div class="container">
+              <form id="form-label">
+                <p><input type="text" class="form-control" placeholder="over Verkeer en Vervoer, Sport, Sociale Voorzieningen of Parkeren..."></p>
+              </form> 
+</div>
+
+<div class="container">
+				<h4><i class="fa fa-arrow-circle-o-right"></i>
+				 <a id="choice-normalisation" href="#" data-toggle="modal" data-target="#modal-normalisation"> <abbr title="of per inwoner, huishouden" class="initialism">euro's</abbr></a></h4>
+					<p>
+					 <a id="btn-submit" href="http://www.openspending.nl/" target="_blank" class="btn btn-lg btn-primary">Berekenen</a>
+					 <a id="btn-download" href="http://www.openspending.nl/" target="_blank" class="btn btn-lg btn-primary disabled">Downloaden</a>
+					</p>
+					
+					<!-- Resultaten -->
+
+<p id="status" class="lead"></p>
+<div id="results">
+</div>
+</div>
+
+<!-- Tuturial -->
+
+ <section id="over">
+        <footer class="lead">
+        <div class="footer-below">
+            <div class="container">
+            		<div class="col-lg-12 text-center">
+            		</div>
+			<div class="col-sm-6">
+				 <small>Wat Buzzfeed kan, kun jij nu ook. Met Openspending Lijstjes kun je zelf een lijst maken met de hoogste of laagste uitgaven van verschillende overheden. Gewoon omdat het kan. Je kunt kiezen voor een lijstje met een top <a id="choice-size" href="#" data-toggle="modal" data-target="#modal-size"><kbd>10</kbd></a>, <a id="choice-size" href="#" data-toggle="modal" data-target="#modal-size"><kbd>20</kbd></a> of <a id="choice-size" href="#" data-toggle="modal" data-target="#modal-size"><kbd>50</kbd></a>. Of je maakt een lijst met <a id="choice-size" href="#" data-toggle="modal" data-target="#modal-size"><kbd>alle</kbd></a> resultaten.</small>
+				 <small>Je kunt ook de volgorde kiezen, de <a id="choice-order" href="#" data-toggle="modal" data-target="#modal-order"><kbd>hoogste</kbd></a> of <a id="choice-order" href="#" data-toggle="modal" data-target="#modal-order"><kbd>laagste</kbd></a> uitgaven. Vervolgens kies je van welk type <a id="choice-kind" href="#" data-toggle="modal" data-target="#modal-kind"><kbd>overheid</kbd></a> je een lijst wilt samenstellen. Zo kun je kiezen uit de uitgaven van <a id="choice-kind" href="#" data-toggle="modal" data-target="#modal-kind"><kbd>gemeenten</kbd></a>, <a id="choice-kind" href="#" data-toggle="modal" data-target="#modal-kind"><kbd>provincies</kbd></a>, <a id="choice-kind" href="#" data-toggle="modal" data-target="#modal-kind"><kbd>waterschappen</kbd></a> of <a id="choice-kind" href="#" data-toggle="modal" data-target="#modal-kind"><kbd>gemeenschappelijke regelingen</kbd></a>.</small>
+                <small>Ook is het mogelijk om een lijst te maken met alleen de <a id="choice-plan" href="#" data-toggle="modal" data-target="#modal-plan"><kbd>begrote</kbd></a> of de daadwerkelijk <a id="choice-plan" href="#" data-toggle="modal" data-target="#modal-plan"><kbd>gerealiseerde</kbd></a> uitgaven. Wil je niet een lijst met de <a id="choice-direction" href="#" data-toggle="modal" data-target="#modal-direction"><kbd>uitgaven</kbd></a> maar met <a id="choice-direction" href="#" data-toggle="modal" data-target="#modal-direction"><kbd>inkomsten</kbd></a> dan kan dat ook.</small>
+			</div>
+			<div class="col-sm-6">
+				<small>Vervolgens kies je over welke <a id="choice-period" href="#" data-toggle="modal" data-target="#modal-period"><kbd>periode</kbd></a> je de lijst wilt, zoals voor het <a id="choice-period" href="#" data-toggle="modal" data-target="#modal-period"><kbd>hele jaar</kbd></a> of je kiest voor een <a id="choice-period" href="#" data-toggle="modal" data-target="#modal-period"><kbd>kwartaal</kbd></a> en daarna het <a id="choice-period" href="#" data-toggle="modal" data-target="#modal-period"><kbd>jaar</kbd></a>. Dan kun je in het zoekvenster invullen voor welk <a href="#page-top"><kbd>type</kbd></a> je de uitgaven wilt zien. Denk aan bijvoorbeeld aan ambulancevervoer, sociale uitkeringen, sport of bij inkomsten aan baten parkeerbelasting.</small>
+                <small>Vervolgens kun je bij de uitgaven van gemeenten en provincies er ook nog voor kiezen om in plaats van <a id="choice-normalisation" href="#" data-toggle="modal" data-target="#modal-normalisation"><kbd>euro's</kbd></a> de bedragen per <a id="choice-normalisation" href="#" data-toggle="modal" data-target="#modal-normalisation"><kbd>inwoner</kbd></a> of <a id="choice-normalisation" href="#" data-toggle="modal" data-target="#modal-normalisation"><kbd>huishouden</kbd></a> te laten omrekenen.</small>
+                <small>Tenslotte klik je op <a href="#page-top"><kbd>berekenen</kbd></a> en je krijgt je lijst te zien. Wil je je lijst verder bewerken dan kun je de lijst ook nog <a href="#page-top"><kbd>downloaden</kbd></a> en krijg je een mooie <a href="#page-top"><code>.csv</code></a> waarmee je kunt spelen.</small><p><br><br></p>
+                <section id="contact">
+			</div>
+		</div>
+		
+<!-- Footer -->
+
+    <div class="footer-above">
+<div class="text-center">
+
+
+              <p class="lead"><small>Een project van <a href="http://openstate.eu" target="_blank">Open State Foundation</a></small>
+                        <ul class="list-inline">
+                             <li><a href="https://twitter.com/openstateeu" target="_blank" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>
+                        </li>
+                        <li><a href="https://github.com/openstate" target="_blank" class="btn-social btn-outline"><i class="fa fa-fw fa-github"></i></a>
+                        </li>
+                        <li><a href="http://openspending.nl/pagina/contact/" target="_blank" class="btn-social btn-outline"><i class="fa fa-fw fa-envelope-o"></i></a>
+                        </li>
+                        <li><a href="http://openstate.eu" target="_blank" class="btn-social btn-outline"><i class="fa fa-fw fa-firefox"></i></a>
+                        </li>
+                        </ul>
+                        <P><BR></P>            </div>
+               </div>
+</footer>
+
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-top page-scroll visible-xs visble-sm">
+        <a class="btn btn-primary" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
     </div>
+
 
     <!-- Button trigger modal -->
     <!--
@@ -395,7 +473,7 @@
         </div>
       </div>
     </div>
-
+    
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -404,5 +482,8 @@
     <script src="js/bootstrap3-typeahead.min.js"></script>
     <script src="js/accounting.min.js"></script>
     <script src="js/app.js"></script>
-  </body>
+    <script src="js/classie.js"></script>
+    <script src="js/cbpAnimatedHeader.js"></script>
+   
+</body>
 </html>
