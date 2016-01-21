@@ -245,7 +245,7 @@ OpenspendingListify.get_url_for_item = function(item) {
     in: 'baten',
     out: 'lasten'
   };
-  var url = "http://test.openspending.nl/" + item.government.slug + '/';
+  var url = "http://www.openspending.nl/" + item.government.slug + '/';
   url += plan2nl[OpenspendingListify.plan] + '/' + OpenspendingListify.year + '-' + OpenspendingListify.period + '/';
   url += direction2nl[OpenspendingListify.direction] + '/' + OpenspendingListify.selected_label.full_url;
   return url;
