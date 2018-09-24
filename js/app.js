@@ -21,7 +21,7 @@ OpenspendingListify.get_governments = function() {
 
   OpenspendingListify.governments_busy = true;
 
-  var governments_url = 'http://www.openspending.nl/api/v1/governments/?kind=' + OpenspendingListify.kind + '&limit=500&format=json';
+  var governments_url = 'https://openspending.nl/api/v1/governments/?kind=' + OpenspendingListify.kind + '&limit=500&format=json';
   $.get(governments_url, function (data) {
     OpenspendingListify.governments_busy = false;
     OpenspendingListify.governments = data.objects;
@@ -31,7 +31,7 @@ OpenspendingListify.get_governments = function() {
 
 OpenspendingListify.init = function() {
   console.log('hello!');
-  $.get('http://www.openspending.nl/api/v1/aggregations/documents/?format=json&limit=0', function (data) {
+  $.get('https://openspending.nl/api/v1/aggregations/documents/?format=json&limit=0', function (data) {
     console.log('got aggregated document data!');
     OpenspendingListify.years = data.facets.years.terms.map(function (t) {
       return parseInt(t.term);
@@ -129,7 +129,7 @@ OpenspendingListify.make_full_urls_for_labels = function() {
 
 OpenspendingListify.get_all_labels = function(document_id, direction) {
   // get all the labels :)
-  var labels_url = 'http://www.openspending.nl/api/v1/labels/?document_id=' + document_id + '&limit=500&format=json';
+  var labels_url = 'https://openspending.nl/api/v1/labels/?document_id=' + document_id + '&limit=500&format=json';
   $.get(labels_url, function (data) {
     console.log('got labels!');
     OpenspendingListify.labels = data.objects.filter(function (l) { return (l.direction == direction);});
@@ -144,7 +144,7 @@ OpenspendingListify.get_sample_document = function(kind, year, period, plan, dir
     return;
   }
 
-  var docs_url = 'http://www.openspending.nl/api/v1/documents/?government__kind=' + kind + '&year=' + year + '&period=' + period + '&plan=' + plan + '&limit=1&format=json';
+  var docs_url = 'https://openspending.nl/api/v1/documents/?government__kind=' + kind + '&year=' + year + '&period=' + period + '&plan=' + plan + '&limit=1&format=json';
   OpenspendingListify.labels_busy = true;
   console.log(docs_url);
   $.get(docs_url, function (data) {
@@ -163,21 +163,21 @@ OpenspendingListify.get_sample_document = function(kind, year, period, plan, dir
 };
 
 OpenspendingListify.get_all_documents = function() {
-  var docs_url = 'http://www.openspending.nl/api/v1/documents/?government__kind=' + OpenspendingListify.kind + '&year=' + OpenspendingListify.year + '&period=' + OpenspendingListify.period + '&plan=' + OpenspendingListify.plan + '&limit=500&format=json';
+  var docs_url = 'https://openspending.nl/api/v1/documents/?government__kind=' + OpenspendingListify.kind + '&year=' + OpenspendingListify.year + '&period=' + OpenspendingListify.period + '&plan=' + OpenspendingListify.plan + '&limit=500&format=json';
 
   return $.get(docs_url);
 };
 
 OpenspendingListify.get_aggregated_entries = function(label) {
-  // http://www.openspending.nl/api/v1/aggregations/entries/?type=spending&code_main=1&period=5&year=2012&direction=out&format=json
-  var url = 'http://www.openspending.nl/api/v1/aggregations/entries/?type=' + OpenspendingListify.plan + '&year=' + OpenspendingListify.year;
+  // https://openspending.nl/api/v1/aggregations/entries/?type=spending&code_main=1&period=5&year=2012&direction=out&format=json
+  var url = 'https://openspending.nl/api/v1/aggregations/entries/?type=' + OpenspendingListify.plan + '&year=' + OpenspendingListify.year;
   url = url + '&period=' + OpenspendingListify.period + '&code_' + label.type + '=' + label.code + '&direction=' + OpenspendingListify.direction + '&limit=1&format=json';
   console.log(url);
   return $.get(url);
 };
 
 OpenspendingListify.submit = function() {
- // http://www.openspending.nl/api/v1/documents/?government__kind=county&year=2014&period=5&plan=spending&format=json
+ // https://openspending.nl/api/v1/documents/?government__kind=county&year=2014&period=5&plan=spending&format=json
   console.log('form submitted!');
 
   $('#status').empty();
@@ -245,7 +245,7 @@ OpenspendingListify.get_url_for_item = function(item) {
     in: 'baten',
     out: 'lasten'
   };
-  var url = "http://www.openspending.nl/" + item.government.slug + '/';
+  var url = "https://openspending.nl/" + item.government.slug + '/';
   url += plan2nl[OpenspendingListify.plan] + '/' + OpenspendingListify.year + '-' + OpenspendingListify.period + '/';
   url += direction2nl[OpenspendingListify.direction] + '/' + OpenspendingListify.selected_label.full_url;
   return url;
